@@ -41,6 +41,7 @@ deprecatedFuncDict = {
 	"const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
 	"const_mem_fun1_ref_t"       : "const_mem_fun1_ref_t is deprecated as of C++11.",
 	"get_unexpected"             : "get_unexpected is deprecated as of C++11.",
+	"gets"                       : "gets is removed in the C11 and C++11 standards.",
 	"istrstream"                 : "istrstream is deprecated as of C++11.",
 	"mem_fun"                    : "mem_fun is deprecated as of C++11. Consider using std::mem_fn instead.",
 	"mem_fun_ref"                : "mem_fun_ref is deprecated as of C++11. Consider using std::bind or std::function instead.",
