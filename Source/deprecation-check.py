@@ -18,7 +18,6 @@
 # For anyone actually experienced in Python, I'm so sorry.
 
 import os
-import string
 
 from exceptions import ParseException
 from exceptions import PEBCAKException
