@@ -108,7 +108,7 @@ def determineFiles(baseDirectory):
 	for root, dirs, files in os.walk(baseDirectory, topdown=True):
 		for name in files:
 			filePath = os.path.join(root, name)
-			if filePath.endswith((".c", ".cc",".cpp")):
+			if filePath.endswith((".c", ".cc",".cpp", ".h")):
 				parseFile(filePath)
 
 def main():
