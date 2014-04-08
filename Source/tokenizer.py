@@ -84,7 +84,7 @@ class Tokenizer:
 					linenum += self.__handleMultiLineComment(sourcefile, linenum)
 
 				# TODO: Improve this, tokenizing by spaces is likely not correct
-				#       since we don't tokenize parentheses, etc.
+				#       since we don't tokenize parentheses in certain cases, etc.
 				if linechar == ' ':
 					self.__tokenlist.append(Token(linenum, tokenstr))
 					tokenstr = ""
