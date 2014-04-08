@@ -40,14 +40,14 @@ class Tokenizer:
 			self.__tokenIdx += 1
 			return token
 
-	def _peek(self, file, num):
+	def __peek(self, file, num):
 		pos = file.tell()
 		data = file.read(num)
 		file.seek(pos, 0)
 		return data
 
 	# Reads through a multi-line comment and returns the number of lines
-	def _handleMultiLineComment(self, file, linenumber):
+	def __handleMultiLineComment(self, file, linenumber):
 		line = file.readline()
 		linenumber += 1
 		if line == "":
@@ -77,11 +77,11 @@ class Tokenizer:
 			tokenstr = ""
 
 			while linechar != "":
-				if linechar == "/" and self._peek(sourcefile, 1) == '/':
+				if linechar == "/" and self.__peek(sourcefile, 1) == '/':
 					sourcefile.readline()
 					linenum += 1
-				elif linechar == "/" and self._peek(sourcefile, 1) == "*":
-					linenum += self._handleMultiLineComment(sourcefile, linenum)
+				elif linechar == "/" and self.__peek(sourcefile, 1) == "*":
+					linenum += self.__handleMultiLineComment(sourcefile, linenum)
 
 				# TODO: Improve this, tokenizing by spaces is likely not correct
 				#       since we don't tokenize parentheses, etc.
