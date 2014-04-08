@@ -2,9 +2,10 @@
 
 from exceptions import ParseException
 
+
 class Token:
-	def __init__(self, lineNumber, string):
-		self.lineNumber = lineNumber
+	def __init__(self, linenumber, string):
+		self.linenumber = linenumber
 		self.string = string
 
 	def __str__(self):
@@ -62,9 +63,9 @@ class Tokenizer:
 				linenumber += 1
 
 		# Handle the case where some dingus might put code right after the terminator.
-		splitStr = line.split("*/")[1]
-		if len(splitStr) > 0:
-			for s in splitStr.split(" "):
+		splitstr = line.split("*/")[1]
+		if len(splitstr) > 0:
+			for s in splitstr.split(" "):
 				self.__tokenlist.append(Token(linenumber, s.strip()))
 
 		return linenumber
@@ -72,22 +73,22 @@ class Tokenizer:
 	def __parseFile(self, filepath):
 		with open(filepath) as sourcefile:
 			linenum = 1
-			lineCh = sourcefile.read(1)
-			tokenStr = ""
+			linechar = sourcefile.read(1)
+			tokenstr = ""
 
-			while lineCh != "":
-				if lineCh == "/" and self._peek(sourcefile, 1) == '/':
+			while linechar != "":
+				if linechar == "/" and self._peek(sourcefile, 1) == '/':
 					sourcefile.readline()
 					linenum += 1
-				elif lineCh == "/" and self._peek(sourcefile, 1) == "*":
+				elif linechar == "/" and self._peek(sourcefile, 1) == "*":
 					linenum += self._handleMultiLineComment(sourcefile, linenum)
 
 				# TODO: Improve this, tokenizing by spaces is likely not correct
 				#       since we don't tokenize parentheses, etc.
-				if lineCh == ' ':
-					self.__tokenlist.append(Token(linenum, tokenStr))
-					tokenStr = ""
+				if linechar == ' ':
+					self.__tokenlist.append(Token(linenum, tokenstr))
+					tokenstr = ""
 				else:
-					tokenStr += lineCh
+					tokenstr += linechar
 
-				lineCh = sourcefile.read(1)
+				linechar = sourcefile.read(1)

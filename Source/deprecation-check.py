@@ -68,26 +68,26 @@ def parseTokens(tokenizer):
 	for token in tokenizer:
 		for key in deprecatedFuncDict:
 			if key in token.string:
-				print("%s: line %d - %s" % (tokenizer.filepath, token.lineNumber+1, deprecatedFuncDict[key]))
+				print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber+1, deprecatedFuncDict[key]))
 
 def parseFile(filepath):
 	tokenizer = Tokenizer(filepath)
 	parseTokens(tokenizer)
 
 # Determines the files to parse
-def determineFiles(baseDirectory):
-	for root, dirs, files in os.walk(baseDirectory, topdown=True):
+def determineFiles(basedirectory):
+	for root, dirs, files in os.walk(basedirectory, topdown=True):
 		for name in files:
-			filePath = os.path.join(root, name)
-			if filePath.endswith((".c", ".cc",".cpp", ".h")):
-				parseFile(filePath)
+			filepath = os.path.join(root, name)
+			if filepath.endswith((".c", ".cc",".cpp", ".h")):
+				parseFile(filepath)
 
 def main():
 	if len(sys.argv) > 1:
-		baseDir = sys.argv[1]
+		basedir = sys.argv[1]
 
-		if os.path.exists(baseDir):
-			determineFiles(baseDir)
+		if os.path.exists(basedir):
+			determineFiles(basedir)
 		else:
 			raise PEBCAKException("Specified top directory does not exist. Terminating...")
 	else:
