@@ -18,6 +18,7 @@
 # For anyone actually experienced in Python, I'm so sorry.
 
 import os
+import sys
 
 from exceptions import ParseException
 from exceptions import PEBCAKException
@@ -54,36 +55,36 @@ deprecatedFuncDict = {
 	"unary_function"             : "unary_function is deprecated as of C++11.",
 	"unexpected"                 : "unexpected is deprecated as of C++11.",
 	"unexpected_handler"         : "unexpected_handler is deprecated as of C++11.",
-};
+}
 
 # TODO
 # This dictionary will be part of a feature that can
 # caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
 cautionaryFuncDict = {
-};
+}
 
 
 # Read the file and returns sanitized lines in the form of tokens.
 def readFile(filepath):
 	tokens = []
-	with open(filepath, "r") as sourceFile:
+	with open(filepath) as sourceFile:
 		for i, line in enumerate(sourceFile):
 			if "/*" in line:
 				if line.count("/*") > 1:
-					raise ParseException("Error in file " + filepath + " at line " + str(i+1) + ". Starting a multi-line comment in an existing multi-line comment is not valid in C/C++.")
+					raise ParseException("Error in file %s at line %d. Starting a multi-line comment in an existing multi-line comment is not valid in C/C++." % (filepath, i+1))
 
 				# Swallow characters until we hit the end of the comment.
-				while not "*/" in line and not line == "":
+				while "*/" not in line and line != "":
 					line = sourceFile.readline()
 					if "/*" in line:
-						raise ParseException("Error in file " + filepath + " at line " + str(i+1) + ". Starting a multi-line comment in an existing multi-line comment is not valid in C/C++.")
+						raise ParseException("Error in file %s at line %d. Starting a multi-line comment in an existing multi-line comment is not valid in C/C++." % (filepath, i+1))
 
-				temp = line.split("*/")[1]
-				if len(temp) > 0:
+				temp = line.split("*/", 1)[1]
+				if temp:
 					tokens.append(Token(i, temp))
 			elif "//" in line:
-				temp = line.split("//")[0]
-				if len(temp) > 0:
+				temp = line.split("//", 1)[0]
+				if temp:
 					tokens.append(Token(i, temp))
 			else:
 				if not line.isspace():
@@ -94,9 +95,9 @@ def readFile(filepath):
 # If present, we warn the developer by printing the corresponding suggestion.
 def parseTokens(filename, tokens):
 	for token in tokens:
-		for key in deprecatedFuncDict.keys():
-			if token.string.find(key) != -1:
-				print(filename + ": line " + str(token.lineNumber+1) + " - " + deprecatedFuncDict[key])
+		for key in deprecatedFuncDict:
+			if key in token.string:
+				print("%s: line %d - %s" % (filename, token.lineNumber+1, deprecatedFuncDict[key]))
 
 def parseFile(filepath):
 	tokens = readFile(filepath)
@@ -111,13 +112,15 @@ def determineFiles(baseDirectory):
 				parseFile(filePath)
 
 def main():
-	print("Enter a base directory to start from: ")
-	baseDir = input();
+	if len(sys.argv) > 1:
+		baseDir = sys.argv[1]
 
-	if os.path.exists(baseDir):
-		determineFiles(baseDir)
+		if os.path.exists(baseDir):
+			determineFiles(baseDir)
+		else:
+			raise PEBCAKException("Specified top directory does not exist. Terminating...")
 	else:
-		raise PEBCAKException("Given path does not exist. Terminating...")
+		print("Usage: deprecation-check.py [directory to read files in]")
 
 # TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
 if __name__ == "__main__":
