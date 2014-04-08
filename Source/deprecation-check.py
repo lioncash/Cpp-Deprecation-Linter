@@ -11,7 +11,6 @@
 # functions with the same name as ones in the standard library within your
 # codebase, because that's just a plain bad idea in the first place. Couple
 # it with 'using namespace std;' and you also get pretty nifty™ clashing possibilities.
-# (your little min, max #define re-rolls can be replaced with the ones in the algorithm header, etc)
 #
 # Further the further note by noting that this will likely produce quite a bit of false positives, as
 # this doesn't even lex or tokenize the files. This may or may not change in the future.
@@ -25,9 +24,6 @@ from exceptions import ParseException
 from exceptions import PEBCAKException
 from tokenizer import Token
 
-#
-# Dictionaries and misc tooling.
-#
 
 deprecatedFuncDict = {
 	"auto_ptr"                   : "auto_ptr is deprecated as of C++11. Consider using shared_ptr or unique_ptr.",
@@ -67,9 +63,6 @@ deprecatedFuncDict = {
 cautionaryFuncDict = {
 };
 
-#
-# Direct file parsing/reading
-#
 
 # Read the file and returns sanitized lines in the form of tokens.
 def readFile(filepath):
@@ -98,7 +91,8 @@ def readFile(filepath):
 					tokens.append(Token(i, line))
 	return tokens
 
-# Individually parse the tokens
+# Checks if a token contains a function name in the dictionary.
+# If present, we warn the developer by printing the corresponding suggestion.
 def parseTokens(filename, tokens):
 	for token in tokens:
 		for key in deprecatedFuncDict.keys():
@@ -106,7 +100,6 @@ def parseTokens(filename, tokens):
 				print(filename + ": line " + str(token.lineNumber+1) + " - " + deprecatedFuncDict[key])
 
 def parseFile(filepath):
-	# Holy fuck, here we go.
 	tokens = readFile(filepath)
 	parseTokens(filepath, tokens)
 
@@ -118,10 +111,6 @@ def determineFiles(baseDirectory):
 			if filePath.endswith((".c", ".cc",".cpp")):
 				parseFile(filePath)
 
-#
-# Main routine
-#
-
 def main():
 	print("Enter a base directory to start from: ")
 	baseDir = input();
@@ -131,7 +120,6 @@ def main():
 	else:
 		raise PEBCAKException("Given path does not exist. Terminating...")
 
-# Wow this is ugly and probably totally a wrong thing to do in python.
-# Literally cringeworthy as F. Consider revising this before actually putting it to use.
+# TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
 if __name__ == "__main__":
 	main()
