@@ -20,9 +20,8 @@
 import os
 import sys
 
-from exceptions import ParseException
 from exceptions import PEBCAKException
-from tokenizer import Token
+from tokenizer import Tokenizer
 
 
 deprecatedFuncDict = {
@@ -63,45 +62,17 @@ deprecatedFuncDict = {
 cautionaryFuncDict = {
 }
 
-
-# Read the file and returns sanitized lines in the form of tokens.
-def readFile(filepath):
-	tokens = []
-	with open(filepath) as sourceFile:
-		for i, line in enumerate(sourceFile):
-			if "/*" in line:
-				if line.count("/*") > 1:
-					raise ParseException("Error in file %s at line %d. Starting a multi-line comment in an existing multi-line comment is not valid in C/C++." % (filepath, i+1))
-
-				# Swallow characters until we hit the end of the comment.
-				while "*/" not in line and line != "":
-					line = sourceFile.readline()
-					if "/*" in line:
-						raise ParseException("Error in file %s at line %d. Starting a multi-line comment in an existing multi-line comment is not valid in C/C++." % (filepath, i+1))
-
-				temp = line.split("*/", 1)[1]
-				if temp:
-					tokens.append(Token(i, temp))
-			elif "//" in line:
-				temp = line.split("//", 1)[0]
-				if temp:
-					tokens.append(Token(i, temp))
-			else:
-				if not line.isspace():
-					tokens.append(Token(i, line))
-	return tokens
-
 # Checks if a token contains a function name in the dictionary.
 # If present, we warn the developer by printing the corresponding suggestion.
-def parseTokens(filename, tokens):
-	for token in tokens:
+def parseTokens(tokenizer):
+	for token in tokenizer:
 		for key in deprecatedFuncDict:
 			if key in token.string:
-				print("%s: line %d - %s" % (filename, token.lineNumber+1, deprecatedFuncDict[key]))
+				print("%s: line %d - %s" % (tokenizer.filepath, token.lineNumber+1, deprecatedFuncDict[key]))
 
 def parseFile(filepath):
-	tokens = readFile(filepath)
-	parseTokens(filepath, tokens)
+	tokenizer = Tokenizer(filepath)
+	parseTokens(tokenizer)
 
 # Determines the files to parse
 def determineFiles(baseDirectory):
