@@ -46,49 +46,30 @@ class Tokenizer:
         file.seek(pos, 0)
         return data
 
-    # Reads through a multi-line comment and returns the number of lines
-    def _handle_multi_line_comment(self, file, linenumber):
-        line = file.readline()
-        linenumber += 1
-        if line == "":
-            raise ParseException("Expected closing specifier for multi-line comment, got EOF instead.")
-
-        while "*/" not in line:
-            if "/*" in line:
-                raise ParseException("Error in file %s at line %d - Multi-line comments cannot be nested within other multi-line comments in C/C++." % (file, linenumber))
-            elif line == "":
-                raise ParseException("Error in file %s at line %d - Expected closing specifier for multi-line comment, got EOF instead." % (file, linenumber))
-            else:
-                line = file.readline()
-                linenumber += 1
-
-        # Handle the case where some dingus might put code right after the terminator.
-        splitstr = line.split("*/")[1]
-        if len(splitstr) > 0:
-            for s in splitstr.split(" "):
-                self._tokenlist.append(Token(linenumber, s.strip()))
-
-        return linenumber
-
     def _parse_file(self, filepath):
         with open(filepath) as sourcefile:
+            in_multi_line_comment = False
             linenum = 1
             linechar = sourcefile.read(1)
             tokenstr = ""
 
             while linechar != "":
-                if linechar == "/" and self._peek(sourcefile, 1) == '/':
-                    sourcefile.readline()
-                    linenum += 1
-                elif linechar == "/" and self._peek(sourcefile, 1) == "*":
-                    linenum += self._handle_multi_line_comment(sourcefile, linenum)
-                else:
-                    # TODO: Improve this, tokenizing by spaces is likely not correct
-                    #       since we don't tokenize parentheses in certain cases, etc.
-                    if linechar == ' ':
-                        self._tokenlist.append(Token(linenum, tokenstr))
-                        tokenstr = ""
+                if not in_multi_line_comment:
+                    if linechar == "/" and self._peek(sourcefile, 1) == '/':
+                        sourcefile.readline()
+                        linenum += 1
+                    elif linechar == "/" and self._peek(sourcefile, 1) == "*":
+                        in_multi_line_comment = True
                     else:
-                        tokenstr += linechar
+                        # TODO: Improve this, tokenizing by spaces is likely not correct
+                        #       since we don't tokenize parentheses in certain cases, etc.
+                        if linechar == ' ' or self._peek(sourcefile, 1) == "":
+                            self._tokenlist.append(Token(linenum, tokenstr))
+                            tokenstr = ""
+                        else:
+                            tokenstr += linechar
+                elif linechar == "*" and self._peek(sourcefile, 1) == "/":
+                    in_multi_line_comment = False
+                    sourcefile.read(1)
 
                 linechar = sourcefile.read(1)
