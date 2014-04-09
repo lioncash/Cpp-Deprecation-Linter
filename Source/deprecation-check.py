@@ -21,7 +21,6 @@ import os
 import sys
 
 from pathutils import *
-from exceptions import PEBCAKException
 from tokenizer import Tokenizer
 
 
@@ -118,7 +117,6 @@ def main():
     if len(sys.argv) == 1:
         display_usage()
         return
-
     for arg in sys.argv[1:]:
         if arg == "-r":
             recursive_search = True
@@ -127,7 +125,9 @@ def main():
         elif os.path.isfile(arg):
             filelist.append(arg)
         else:
-            raise PEBCAKException("Unrecognized argument %s given" % arg)
+            print("Invalid argument specified: %s" % arg)
+            display_usage()
+            return
     for file in filelist:
         tokenize_file(file)
 
