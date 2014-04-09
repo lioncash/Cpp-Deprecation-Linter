@@ -83,6 +83,11 @@ def evaluate_tokens(tokenizer):
         for key in deprecatedFuncDict:
             if key in token.string:
                 print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber + 1, deprecatedFuncDict[key]))
+                break
+        for key in cautionaryFuncDict:
+            if key in token.string:
+                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber + 1, cautionaryFuncDict[key]))
+                break
 
 
 def tokenize_file(filepath):
