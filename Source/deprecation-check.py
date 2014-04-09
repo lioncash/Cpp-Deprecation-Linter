@@ -26,11 +26,14 @@ from tokenizer import Tokenizer
 
 deprecatedFuncDict = {
     "auto_ptr"                   : "auto_ptr is deprecated as of C++11. Consider using shared_ptr or unique_ptr.",
+    "bcmp"                       : "bcmp is a POSIX standard function, and is removed as of POSIX.1-2008. Consider using memcmp instead.",
+    "bcopy"                      : "bcopy is a POSIX standard function, and is removed as of POSIX.1-2008. Consider using memcpy instead.",
     "binary_function"            : "binary_function is deprecated as of C++11.",
     "binder1st"                  : "binder1st is deprecated as of C++11. Consider using std::bind instead.",
     "binder2nd"                  : "binder2nd is deprecated as of C++11. Consider using std::bind instead.",
     "bind1st"                    : "bind1st is deprecated as of C++11. Consider using std::bind instead.",
     "bind2nd"                    : "bind2nd is deprecated as of C++11. Consider using std::bind instead.",
+    "bzero"                      : "bzero is a POSIX standard function, and is removed as of POSIX.1-2008. Consider using memset instead.",
     "const_mem_fun_t"            : "const_mem_fun_t is deprecated as of C++11.",
     "const_mem_fun1_t"           : "const_mem_fun1_t is deprecated as of C++11.",
     "const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
