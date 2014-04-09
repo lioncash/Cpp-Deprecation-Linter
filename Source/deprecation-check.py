@@ -63,6 +63,7 @@ deprecatedFuncDict = {
 # This dictionary will be part of a feature that can
 # caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
 cautionaryFuncDict = {
+    "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc or new.",
 }
 
 
