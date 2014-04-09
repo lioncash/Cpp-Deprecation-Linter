@@ -64,6 +64,15 @@ deprecatedFuncDict = {
 # caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
 cautionaryFuncDict = {
     "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc or new.",
+
+   # Windows-specific functions
+   "ChangeWindowMessageFilter" : "Using ChangeWindowMessageFilter is not recommended. It is recommended that ChangeWindowMessageFilterEx be used instead.",
+   "GetClassInfo"              : "GetClassInfo has been superseded by GetClassInfoEx. Consider using it instead.",
+   "GetClassLong"              : "GetClassLong has been superseded by GetClassLongPtr. Consider using it instead to have 32-bit and 64-bit compatible code.",
+   "GetWindowLong"             : "GetWindowLong has been superseded by GetWindowLongPtr. Consider using it instead to have 32-bit and 64-bit compatible code.",
+   "RegisterClass"             : "RegisterClass has been superseded by RegisterClassEx. Consider using it instead.",
+   "SetClassLong"              : "GetClassLong has been superseded by GetClassLongPtr. Consider using it instead to have 32-bit and 64-bit compatible code.",
+   "SetWindowLong"             : "SetWindowLong has been superseded by SetWindowLongPtr. Consider using it instead to have 32-bit and 64-bit compatible code.",
 }
 
 
