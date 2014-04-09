@@ -82,13 +82,13 @@ class Tokenizer:
                     linenum += 1
                 elif linechar == "/" and self._peek(sourcefile, 1) == "*":
                     linenum += self._handle_multi_line_comment(sourcefile, linenum)
-
-                # TODO: Improve this, tokenizing by spaces is likely not correct
-                #       since we don't tokenize parentheses in certain cases, etc.
-                if linechar == ' ':
-                    self._tokenlist.append(Token(linenum, tokenstr))
-                    tokenstr = ""
                 else:
-                    tokenstr += linechar
+                    # TODO: Improve this, tokenizing by spaces is likely not correct
+                    #       since we don't tokenize parentheses in certain cases, etc.
+                    if linechar == ' ':
+                        self._tokenlist.append(Token(linenum, tokenstr))
+                        tokenstr = ""
+                    else:
+                        tokenstr += linechar
 
                 linechar = sourcefile.read(1)
