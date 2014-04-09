@@ -20,6 +20,7 @@
 import os
 import sys
 
+from pathutils import *
 from exceptions import PEBCAKException
 from tokenizer import Tokenizer
 
@@ -91,7 +92,8 @@ cautionaryDict = {
 
 # Checks if a token contains a function name in the dictionary.
 # If present, we warn the developer by printing the corresponding suggestion.
-def evaluate_tokens(tokenizer):
+def tokenize_file(filepath):
+    tokenizer = Tokenizer(filepath)
     for token in tokenizer:
         for key in deprecatedDict:
             if key in token.string:
@@ -103,30 +105,32 @@ def evaluate_tokens(tokenizer):
                 break
 
 
-def tokenize_file(filepath):
-    tokenizer = Tokenizer(filepath)
-    evaluate_tokens(tokenizer)
-
-
-# Determines the files to parse
-def determine_files(basedirectory):
-    for root, dirs, files in os.walk(basedirectory, topdown=True):
-        for name in files:
-            filepath = os.path.join(root, name)
-            if filepath.endswith((".c", ".cc", ".cpp", ".h")):
-                tokenize_file(filepath)
+def display_usage():
+    print("Usage: deprecation-check.py <flags> [Files and directories to scan separated by spaces]\n")
+    print("Flags:")
+    print("\t-r - Recursively search any given directories.")
 
 
 def main():
-    if len(sys.argv) > 1:
-        basedir = sys.argv[1]
+    filelist = []
+    recursive_search = False
 
-        if os.path.exists(basedir):
-            determine_files(basedir)
+    if len(sys.argv) == 1:
+        display_usage()
+        return
+
+    for arg in sys.argv[1:]:
+        if arg == "-r":
+            recursive_search = True
+        elif os.path.isdir(arg):
+            filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".h"), recursive_search))
+        elif os.path.isfile(arg):
+            filelist.append(arg)
         else:
-            raise PEBCAKException("Specified top directory does not exist. Terminating...")
-    else:
-        print("Usage: deprecation-check.py [directory to read files in]")
+            raise PEBCAKException("Unrecognized argument %s given" % arg)
+    for file in filelist:
+        tokenize_file(file)
+
 
 # TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
 if __name__ == "__main__":
