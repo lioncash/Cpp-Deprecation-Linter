@@ -63,7 +63,7 @@ class Tokenizer:
 				linenumber += 1
 
 		# Handle the case where some dingus might put code right after the terminator.
-		splitstr = line.split("*/")[1]
+		splitstr = line.split("*/", 1)[1]
 		if len(splitstr) > 0:
 			for s in splitstr.split(" "):
 				self.__tokenlist.append(Token(linenumber, s.strip()))
