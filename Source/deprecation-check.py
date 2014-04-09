@@ -25,35 +25,35 @@ from tokenizer import Tokenizer
 
 
 deprecatedFuncDict = {
-	"auto_ptr"                   : "auto_ptr is deprecated as of C++11. Consider using shared_ptr or unique_ptr.",
-	"binary_function"            : "binary_function is deprecated as of C++11.",
-	"binder1st"                  : "binder1st is deprecated as of C++11. Consider using std::bind instead.",
-	"binder2nd"                  : "binder2nd is deprecated as of C++11. Consider using std::bind instead.",
-	"bind1st"                    : "bind1st is deprecated as of C++11. Consider using std::bind instead.",
-	"bind2nd"                    : "bind2nd is deprecated as of C++11. Consider using std::bind instead.",
-	"const_mem_fun_t"            : "const_mem_fun_t is deprecated as of C++11.",
-	"const_mem_fun1_t"           : "const_mem_fun1_t is deprecated as of C++11.",
-	"const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
-	"const_mem_fun1_ref_t"       : "const_mem_fun1_ref_t is deprecated as of C++11.",
-	"get_unexpected"             : "get_unexpected is deprecated as of C++11.",
-	"gets"                       : "gets is removed in the C11 and C++11 standards.",
-	"istrstream"                 : "istrstream is deprecated as of C++11.",
-	"mem_fun"                    : "mem_fun is deprecated as of C++11. Consider using std::mem_fn instead.",
-	"mem_fun_ref"                : "mem_fun_ref is deprecated as of C++11. Consider using std::bind or std::function instead.",
-	"mem_fun_ref_t"              : "mem_fun_ref_t is deprecated as of C++11.",
-	"mem_fun1_ref_t"             : "mem_fun1_ref_t is deprecated as of C++11.",
-	"mem_fun_t"                  : "mem_fun_t is deprecated as of C++11.",
-	"mem_fun1_t"                 : "mem_fun1_t is deprecated as of C++11.",
-	"ostrstream"                 : "ostrstream is deprecated as of C++11.",
-	"pointer_to_binary_function" : "pointer_to_binary_function is deprecated as of C++11.",
-	"pointer_to_unary_function"  : "pointer_to_unary_function is deprecated as of C++11.",
-	"ptr_fun"                    : "ptr_fun is deprecated as of C++11. Consider using std::function or std::ref instead.",
-	"set_unexpected"             : "set_unexpected is deprecated as of C++11.",
-	"strstream"                  : "strstream is deprecated as of C++11.",
-	"strstreambuf"               : "strstreambuf is deprecated as of C++11.",
-	"unary_function"             : "unary_function is deprecated as of C++11.",
-	"unexpected"                 : "unexpected is deprecated as of C++11.",
-	"unexpected_handler"         : "unexpected_handler is deprecated as of C++11.",
+    "auto_ptr"                   : "auto_ptr is deprecated as of C++11. Consider using shared_ptr or unique_ptr.",
+    "binary_function"            : "binary_function is deprecated as of C++11.",
+    "binder1st"                  : "binder1st is deprecated as of C++11. Consider using std::bind instead.",
+    "binder2nd"                  : "binder2nd is deprecated as of C++11. Consider using std::bind instead.",
+    "bind1st"                    : "bind1st is deprecated as of C++11. Consider using std::bind instead.",
+    "bind2nd"                    : "bind2nd is deprecated as of C++11. Consider using std::bind instead.",
+    "const_mem_fun_t"            : "const_mem_fun_t is deprecated as of C++11.",
+    "const_mem_fun1_t"           : "const_mem_fun1_t is deprecated as of C++11.",
+    "const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
+    "const_mem_fun1_ref_t"       : "const_mem_fun1_ref_t is deprecated as of C++11.",
+    "get_unexpected"             : "get_unexpected is deprecated as of C++11.",
+    "gets"                       : "gets is removed in the C11 and C++11 standards.",
+    "istrstream"                 : "istrstream is deprecated as of C++11.",
+    "mem_fun"                    : "mem_fun is deprecated as of C++11. Consider using std::mem_fn instead.",
+    "mem_fun_ref"                : "mem_fun_ref is deprecated as of C++11. Consider using std::bind or std::function instead.",
+    "mem_fun_ref_t"              : "mem_fun_ref_t is deprecated as of C++11.",
+    "mem_fun1_ref_t"             : "mem_fun1_ref_t is deprecated as of C++11.",
+    "mem_fun_t"                  : "mem_fun_t is deprecated as of C++11.",
+    "mem_fun1_t"                 : "mem_fun1_t is deprecated as of C++11.",
+    "ostrstream"                 : "ostrstream is deprecated as of C++11.",
+    "pointer_to_binary_function" : "pointer_to_binary_function is deprecated as of C++11.",
+    "pointer_to_unary_function"  : "pointer_to_unary_function is deprecated as of C++11.",
+    "ptr_fun"                    : "ptr_fun is deprecated as of C++11. Consider using std::function or std::ref instead.",
+    "set_unexpected"             : "set_unexpected is deprecated as of C++11.",
+    "strstream"                  : "strstream is deprecated as of C++11.",
+    "strstreambuf"               : "strstreambuf is deprecated as of C++11.",
+    "unary_function"             : "unary_function is deprecated as of C++11.",
+    "unexpected"                 : "unexpected is deprecated as of C++11.",
+    "unexpected_handler"         : "unexpected_handler is deprecated as of C++11.",
 }
 
 # TODO
@@ -66,37 +66,37 @@ cautionaryFuncDict = {
 # Checks if a token contains a function name in the dictionary.
 # If present, we warn the developer by printing the corresponding suggestion.
 def evaluate_tokens(tokenizer):
-	for token in tokenizer:
-		for key in deprecatedFuncDict:
-			if key in token.string:
-				print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber + 1, deprecatedFuncDict[key]))
+    for token in tokenizer:
+        for key in deprecatedFuncDict:
+            if key in token.string:
+                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber + 1, deprecatedFuncDict[key]))
 
 
 def tokenize_file(filepath):
-	tokenizer = Tokenizer(filepath)
-	evaluate_tokens(tokenizer)
+    tokenizer = Tokenizer(filepath)
+    evaluate_tokens(tokenizer)
 
 
 # Determines the files to parse
 def determine_files(basedirectory):
-	for root, dirs, files in os.walk(basedirectory, topdown=True):
-		for name in files:
-			filepath = os.path.join(root, name)
-			if filepath.endswith((".c", ".cc", ".cpp", ".h")):
-				tokenize_file(filepath)
+    for root, dirs, files in os.walk(basedirectory, topdown=True):
+        for name in files:
+            filepath = os.path.join(root, name)
+            if filepath.endswith((".c", ".cc", ".cpp", ".h")):
+                tokenize_file(filepath)
 
 
 def main():
-	if len(sys.argv) > 1:
-		basedir = sys.argv[1]
+    if len(sys.argv) > 1:
+        basedir = sys.argv[1]
 
-		if os.path.exists(basedir):
-			determine_files(basedir)
-		else:
-			raise PEBCAKException("Specified top directory does not exist. Terminating...")
-	else:
-		print("Usage: deprecation-check.py [directory to read files in]")
+        if os.path.exists(basedir):
+            determine_files(basedir)
+        else:
+            raise PEBCAKException("Specified top directory does not exist. Terminating...")
+    else:
+        print("Usage: deprecation-check.py [directory to read files in]")
 
 # TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
 if __name__ == "__main__":
-	main()
+    main()
