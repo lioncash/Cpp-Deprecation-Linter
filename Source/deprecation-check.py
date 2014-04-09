@@ -24,7 +24,7 @@ from exceptions import PEBCAKException
 from tokenizer import Tokenizer
 
 
-deprecatedFuncDict = {
+deprecatedDict = {
     "auto_ptr"                   : "auto_ptr is deprecated as of C++11. Consider using shared_ptr or unique_ptr.",
     "bcmp"                       : "bcmp is a POSIX legacy function, and is removed as of POSIX.1-2008. Consider using memcmp instead.",
     "bcopy"                      : "bcopy is a POSIX legacy function, and is removed as of POSIX.1-2008. Consider using memcpy instead.",
@@ -34,6 +34,7 @@ deprecatedFuncDict = {
     "bind1st"                    : "bind1st is deprecated as of C++11. Consider using std::bind instead.",
     "bind2nd"                    : "bind2nd is deprecated as of C++11. Consider using std::bind instead.",
     "bzero"                      : "bzero is a POSIX legacy function, and is removed as of POSIX.1-2008. Consider using memset instead.",
+    "CLK_TCK"                    : "CLK_TCK is deprecated. Consider using CLOCKS_PER_SEC instead.",
     "const_mem_fun_t"            : "const_mem_fun_t is deprecated as of C++11.",
     "const_mem_fun1_t"           : "const_mem_fun1_t is deprecated as of C++11.",
     "const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
@@ -42,6 +43,8 @@ deprecatedFuncDict = {
     "fcvt"                       : "fcvt is a POSIX legacy function. Consider using std::to_string or sprintf instead.",
     "ftime"                      : "ftime is a POSIX legacy function. Consider using functions provided by the chrono header in C++11 instead.",
     "gcvt"                       : "gcvt is a POSIX legacy function. Consider using std::to_string or sprintf instead.",
+    "gethostbyaddr"              : "gethostbyaddr is deprecated in favor of getaddrinfo. Consider using it instead.",
+    "gethostbyname"              : "gethostbyname is deprecated in favor of getnameinfo. Consider using it instead.",
     "get_unexpected"             : "get_unexpected is deprecated as of C++11.",
     "gets"                       : "gets is removed in the C11 and C++11 standards.",
     "getwd"                      : "getwd is a POSIX legacy function.",
@@ -70,7 +73,7 @@ deprecatedFuncDict = {
 # TODO
 # This dictionary will be part of a feature that can
 # caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
-cautionaryFuncDict = {
+cautionaryDict = {
     "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc or new.",
 
     # Windows-specific functions
@@ -90,13 +93,13 @@ cautionaryFuncDict = {
 # If present, we warn the developer by printing the corresponding suggestion.
 def evaluate_tokens(tokenizer):
     for token in tokenizer:
-        for key in deprecatedFuncDict:
+        for key in deprecatedDict:
             if key in token.string:
-                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, deprecatedFuncDict[key]))
+                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, deprecatedDict[key]))
                 break
-        for key in cautionaryFuncDict:
+        for key in cautionaryDict:
             if key in token.string:
-                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, cautionaryFuncDict[key]))
+                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, cautionaryDict[key]))
                 break
 
 
