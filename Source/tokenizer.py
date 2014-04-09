@@ -18,9 +18,9 @@ class Token:
 class Tokenizer:
 	def __init__(self, filepath):
 		self.filepath = filepath
-		self.__tokenlist = []
-		self.__tokenIdx = 0
-		self.__parseFile(filepath)
+		self._tokenlist = []
+		self._tokenIdx = 0
+		self._parse_file(filepath)
 
 	def __str__(self):
 		return "Tokenizer - %s" % self.filepath
@@ -29,25 +29,25 @@ class Tokenizer:
 		return "Tokenizer - %s" % self.filepath
 
 	def __iter__(self):
-		self.__tokenIdx = 0
+		self._tokenIdx = 0
 		return self
 
 	def __next__(self):
-		if self.__tokenIdx >= len(self.__tokenlist):
+		if self._tokenIdx >= len(self._tokenlist):
 			raise StopIteration
 		else:
-			token = self.__tokenlist[self.__tokenIdx]
-			self.__tokenIdx += 1
+			token = self._tokenlist[self._tokenIdx]
+			self._tokenIdx += 1
 			return token
 
-	def __peek(self, file, num):
+	def _peek(self, file, num):
 		pos = file.tell()
 		data = file.read(num)
 		file.seek(pos, 0)
 		return data
 
 	# Reads through a multi-line comment and returns the number of lines
-	def __handleMultiLineComment(self, file, linenumber):
+	def _handle_multi_line_comment(self, file, linenumber):
 		line = file.readline()
 		linenumber += 1
 		if line == "":
@@ -63,30 +63,30 @@ class Tokenizer:
 				linenumber += 1
 
 		# Handle the case where some dingus might put code right after the terminator.
-		splitstr = line.split("*/", 1)[1]
+		splitstr = line.split("*/")[1]
 		if len(splitstr) > 0:
 			for s in splitstr.split(" "):
-				self.__tokenlist.append(Token(linenumber, s.strip()))
+				self._tokenlist.append(Token(linenumber, s.strip()))
 
 		return linenumber
 
-	def __parseFile(self, filepath):
+	def _parse_file(self, filepath):
 		with open(filepath) as sourcefile:
 			linenum = 1
 			linechar = sourcefile.read(1)
 			tokenstr = ""
 
 			while linechar != "":
-				if linechar == "/" and self.__peek(sourcefile, 1) == '/':
+				if linechar == "/" and self._peek(sourcefile, 1) == '/':
 					sourcefile.readline()
 					linenum += 1
-				elif linechar == "/" and self.__peek(sourcefile, 1) == "*":
-					linenum += self.__handleMultiLineComment(sourcefile, linenum)
+				elif linechar == "/" and self._peek(sourcefile, 1) == "*":
+					linenum += self._handle_multi_line_comment(sourcefile, linenum)
 
 				# TODO: Improve this, tokenizing by spaces is likely not correct
 				#       since we don't tokenize parentheses in certain cases, etc.
 				if linechar == ' ':
-					self.__tokenlist.append(Token(linenum, tokenstr))
+					self._tokenlist.append(Token(linenum, tokenstr))
 					tokenstr = ""
 				else:
 					tokenstr += linechar

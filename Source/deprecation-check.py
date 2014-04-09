@@ -10,7 +10,7 @@
 # or if it's part of your actual codebase. However, you shouldn't be declaring
 # functions with the same name as ones in the standard library within your
 # codebase, because that's just a plain bad idea in the first place. Couple
-# it with 'using namespace std;' and you also get pretty nifty™ clashing possibilities.
+# it with 'using namespace std;' and you also get pretty nifty clashing possibilities.
 #
 # Further the further note by noting that this will likely produce quite a bit of false positives, as
 # this doesn't even lex or tokenize the files. This may or may not change in the future.
@@ -62,32 +62,36 @@ deprecatedFuncDict = {
 cautionaryFuncDict = {
 }
 
+
 # Checks if a token contains a function name in the dictionary.
 # If present, we warn the developer by printing the corresponding suggestion.
-def parseTokens(tokenizer):
+def evaluate_tokens(tokenizer):
 	for token in tokenizer:
 		for key in deprecatedFuncDict:
 			if key in token.string:
-				print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber+1, deprecatedFuncDict[key]))
+				print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber + 1, deprecatedFuncDict[key]))
 
-def parseFile(filepath):
+
+def tokenize_file(filepath):
 	tokenizer = Tokenizer(filepath)
-	parseTokens(tokenizer)
+	evaluate_tokens(tokenizer)
+
 
 # Determines the files to parse
-def determineFiles(basedirectory):
+def determine_files(basedirectory):
 	for root, dirs, files in os.walk(basedirectory, topdown=True):
 		for name in files:
 			filepath = os.path.join(root, name)
-			if filepath.endswith((".c", ".cc",".cpp", ".h")):
-				parseFile(filepath)
+			if filepath.endswith((".c", ".cc", ".cpp", ".h")):
+				tokenize_file(filepath)
+
 
 def main():
 	if len(sys.argv) > 1:
 		basedir = sys.argv[1]
 
 		if os.path.exists(basedir):
-			determineFiles(basedir)
+			determine_files(basedir)
 		else:
 			raise PEBCAKException("Specified top directory does not exist. Terminating...")
 	else:
