@@ -74,7 +74,7 @@ deprecatedDict = {
 # This dictionary will be part of a feature that can
 # caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
 cautionaryDict = {
-    "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc or new.",
+    "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc, new, an STL container, or a smart pointer.",
 
     # Windows-specific functions
     "ChangeWindowMessageFilter" : "Using ChangeWindowMessageFilter is not recommended. It is recommended that ChangeWindowMessageFilterEx be used instead.",
