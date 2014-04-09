@@ -54,6 +54,9 @@ class Tokenizer:
             tokenstr = ""
 
             while linechar != "":
+                if linechar == "\n":
+                    linenum += 1
+
                 if not in_multi_line_comment:
                     if linechar == "/" and self._peek(sourcefile, 1) == '/':
                         sourcefile.readline()
