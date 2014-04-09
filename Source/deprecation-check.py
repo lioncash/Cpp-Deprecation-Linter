@@ -1,5 +1,5 @@
-# Searches through directories from a given base directory
-# and looks through C/C++ files for deprecated functions and
+# Searches through given files and directories,
+# looks for deprecated functions, and
 # suggests alternatives.
 #
 # This script assumes that the codebase being examined is not
@@ -12,8 +12,7 @@
 # codebase, because that's just a plain bad idea in the first place. Couple
 # it with 'using namespace std;' and you also get pretty nifty clashing possibilities.
 #
-# Further the further note by noting that this will likely produce quite a bit of false positives, as
-# this doesn't even lex or tokenize the files. This may or may not change in the future.
+# You should also note that this may produce some false positives.
 #
 # For anyone actually experienced in Python, I'm so sorry.
 
