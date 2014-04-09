@@ -70,9 +70,7 @@ deprecatedDict = {
     "wcswcs"                     : "wcswcs is a POSIX legacy function. Consider using wcsstr or std::wstring instead.",
 }
 
-# TODO
-# This dictionary will be part of a feature that can
-# caution a dev depending on certain functions (ie. strcpy vs. strncpy, etc).
+# Defines functions that likely have better alternatives
 cautionaryDict = {
     "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc, new, an STL container, or a smart pointer.",
 
