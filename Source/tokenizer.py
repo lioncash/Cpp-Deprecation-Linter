@@ -1,4 +1,5 @@
 # TODO: Improve this greatly.
+# TODO: Skip tokenizing string occurrences. These are not necessary.
 
 from exceptions import ParseException
 
