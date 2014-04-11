@@ -53,7 +53,8 @@ class Tokenizer:
         santized_string = re.sub("[()!+-/*#?:><&|;{}]", " ", santized_string)  # Now remove other unnecessary characters
         split_list = santized_string.split(" ")
         for item in split_list:
-            self._tokenlist.append(Token(linenum, item))
+            if len(item) > 0:
+                self._tokenlist.append(Token(linenum, item))
 
     def _parse_file(self, filepath):
         with open(filepath) as sourcefile:
