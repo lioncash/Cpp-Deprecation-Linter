@@ -1,6 +1,7 @@
 # TODO: Improve this greatly.
 # TODO: Skip tokenizing string occurrences. These are not necessary.
 
+import re
 from exceptions import ParseException
 
 
@@ -47,6 +48,13 @@ class Tokenizer:
         file.seek(pos, 0)
         return data
 
+    def _sanitize_add_token(self, linenum, string):
+        santized_string = re.sub("<[^>]*>", "", string)  # Clip off templated arguments if possible.
+        santized_string = re.sub("[()!+-/*#?:><&|;{}]", " ", santized_string)  # Now remove other unnecessary characters
+        split_list = santized_string.split(" ")
+        for item in split_list:
+            self._tokenlist.append(Token(linenum, item))
+
     def _parse_file(self, filepath):
         with open(filepath) as sourcefile:
             in_multi_line_comment = False
@@ -64,14 +72,11 @@ class Tokenizer:
                         linenum += 1
                     elif linechar == "/" and self._peek(sourcefile, 1) == "*":
                         in_multi_line_comment = True
+                    elif linechar.isspace() and not tokenstr.isspace():
+                        self._sanitize_add_token(linenum, tokenstr)
+                        tokenstr = ""  # New token
                     else:
-                        # TODO: Improve this, tokenizing by spaces is likely not correct
-                        #       since we don't tokenize parentheses in certain cases, etc.
-                        if linechar == ' ' or self._peek(sourcefile, 1) == "":
-                            self._tokenlist.append(Token(linenum, tokenstr))
-                            tokenstr = ""
-                        else:
-                            tokenstr += linechar
+                        tokenstr += linechar
                 elif linechar == "*" and self._peek(sourcefile, 1) == "/":
                     in_multi_line_comment = False
                     sourcefile.read(1)

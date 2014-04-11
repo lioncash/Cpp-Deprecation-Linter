@@ -91,14 +91,12 @@ cautionaryDict = {
 def tokenize_file(filepath):
     tokenizer = Tokenizer(filepath)
     for token in tokenizer:
-        for key in deprecatedDict:
-            if key in token.string:
-                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, deprecatedDict[key]))
-                break
-        for key in cautionaryDict:
-            if key in token.string:
-                print("%s: line %d - %s" % (tokenizer.filepath, token.linenumber, cautionaryDict[key]))
-                break
+        if token.string in deprecatedDict:
+            print("%s: line %d - %s" % (filepath, token.linenumber, deprecatedDict[token.string]))
+            continue
+        if token.string in cautionaryDict:
+            print("%s: line %d - %s" % (filepath, token.linenumber, cautionaryDict[token.string]))
+            continue
 
 
 def display_usage():
