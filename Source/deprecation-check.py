@@ -93,10 +93,9 @@ def tokenize_file(filepath):
     for token in tokenizer:
         if token.string in deprecatedDict:
             print("%s: line %d - %s" % (filepath, token.linenumber, deprecatedDict[token.string]))
-            continue
         if token.string in cautionaryDict:
             print("%s: line %d - %s" % (filepath, token.linenumber, cautionaryDict[token.string]))
-            continue
+
 
 
 def display_usage():
