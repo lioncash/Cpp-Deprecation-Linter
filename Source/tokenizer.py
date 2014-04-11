@@ -42,9 +42,9 @@ class Tokenizer:
             self._tokenIdx += 1
             return token
 
-    def _peek(self, file, num):
+    def _peek(self, file):
         pos = file.tell()
-        data = file.read(num)
+        data = file.read(1)
         file.seek(pos, 0)
         return data
 
@@ -58,6 +58,7 @@ class Tokenizer:
     def _parse_file(self, filepath):
         with open(filepath) as sourcefile:
             in_multi_line_comment = False
+            in_string = False
             linenum = 1
             linechar = sourcefile.read(1)
             tokenstr = ""
@@ -66,19 +67,26 @@ class Tokenizer:
                 if linechar == "\n":
                     linenum += 1
 
-                if not in_multi_line_comment:
-                    if linechar == "/" and self._peek(sourcefile, 1) == '/':
+                if not in_multi_line_comment and not in_string:
+                    if linechar == "/" and self._peek(sourcefile) == '/':
                         sourcefile.readline()
                         linenum += 1
-                    elif linechar == "/" and self._peek(sourcefile, 1) == "*":
+                    elif linechar == "/" and self._peek(sourcefile) == "*":
                         in_multi_line_comment = True
+                    elif linechar == "\"":
+                        in_string = True
                     elif linechar.isspace() and not tokenstr.isspace():
                         self._sanitize_add_token(linenum, tokenstr)
                         tokenstr = ""  # New token
                     else:
                         tokenstr += linechar
-                elif linechar == "*" and self._peek(sourcefile, 1) == "/":
+                elif in_multi_line_comment and linechar == "*" and self._peek(sourcefile) == "/":
                     in_multi_line_comment = False
                     sourcefile.read(1)
+                elif in_string:
+                    if linechar == "\\" and self._peek(sourcefile) == "\"":
+                        sourcefile.read(1)
+                    elif linechar == "\"":
+                        in_string = False
 
                 linechar = sourcefile.read(1)
