@@ -97,7 +97,6 @@ def tokenize_file(filepath):
             print("%s: line %d - %s" % (filepath, token.linenumber, cautionaryDict[token.string]))
 
 
-
 def display_usage():
     print("Usage: deprecation-check.py <flags> [Files and directories to scan separated by spaces]\n")
     print("Flags:")

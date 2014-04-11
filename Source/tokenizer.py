@@ -19,16 +19,16 @@ class Token:
 
 class Tokenizer:
     def __init__(self, filepath):
-        self.filepath = filepath
+        self._filepath = filepath
         self._tokenlist = []
         self._tokenIdx = 0
         self._parse_file(filepath)
 
     def __str__(self):
-        return "Tokenizer - %s" % self.filepath
+        return "Tokenizer - %s" % self._filepath
 
     def __repr__(self):
-        return "Tokenizer - %s" % self.filepath
+        return "Tokenizer - %s" % self._filepath
 
     def __iter__(self):
         self._tokenIdx = 0
