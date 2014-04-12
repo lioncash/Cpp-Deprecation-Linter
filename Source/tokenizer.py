@@ -42,9 +42,9 @@ class Tokenizer:
             self._tokenIdx += 1
             return token
 
-    def _peek(self, file):
+    def _peek(self, file, num=1):
         pos = file.tell()
-        data = file.read(1)
+        data = file.read(num)
         file.seek(pos, 0)
         return data
 
@@ -53,7 +53,7 @@ class Tokenizer:
         santized_string = re.sub("[()!+-/*#?:><&|;{}]", " ", santized_string)  # Now remove other unnecessary characters
         split_list = santized_string.split(" ")
         for item in split_list:
-            if item: 
+            if item:
                 self._tokenlist.append(Token(linenum, item))
 
     def _parse_file(self, filepath):
@@ -76,6 +76,11 @@ class Tokenizer:
                         in_multi_line_comment = True
                     elif linechar == "\"":
                         in_string = True
+                    elif linechar == "'":
+                        if self._peek(sourcefile) == "\\":  # Special character escapes
+                            sourcefile.read(3)
+                        else:
+                            sourcefile.read(2)
                     elif linechar.isspace() and not tokenstr.isspace():
                         self._sanitize_add_token(linenum, tokenstr)
                         tokenstr = ""  # New token
@@ -85,9 +90,10 @@ class Tokenizer:
                     in_multi_line_comment = False
                     sourcefile.read(1)
                 elif in_string:
-                    if linechar == "\\" and self._peek(sourcefile) == "\"":
+                    if linechar == "\\":   # Skip escaped chars
                         sourcefile.read(1)
                     elif linechar == "\"":
                         in_string = False
 
                 linechar = sourcefile.read(1)
+
