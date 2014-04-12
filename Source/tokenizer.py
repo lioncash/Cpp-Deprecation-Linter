@@ -96,4 +96,3 @@ class Tokenizer:
                         in_string = False
 
                 linechar = sourcefile.read(1)
-
