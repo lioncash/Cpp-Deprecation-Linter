@@ -109,20 +109,20 @@ def main():
 
     if len(sys.argv) == 1:
         display_usage()
-        return
-    for arg in sys.argv[1:]:
-        if arg == "-r":
-            recursive_search = True
-        elif os.path.isdir(arg):
-            filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".h"), recursive_search))
-        elif os.path.isfile(arg):
-            filelist.append(arg)
-        else:
-            print("Invalid argument specified: %s" % arg)
-            display_usage()
-            return
-    for file in filelist:
-        tokenize_file(file)
+    else:
+        for arg in sys.argv[1:]:
+            if arg == "-r":
+                recursive_search = True
+            elif os.path.isdir(arg):
+                filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".h"), recursive_search))
+            elif os.path.isfile(arg):
+                filelist.append(arg)
+            else:
+                print("Invalid argument specified: %s" % arg)
+                display_usage()
+                return
+        for file in filelist:
+            tokenize_file(file)
 
 
 # TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
