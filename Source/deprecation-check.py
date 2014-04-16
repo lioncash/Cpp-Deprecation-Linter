@@ -72,6 +72,8 @@ deprecatedDict = {
 # Defines functions that likely have better alternatives
 cautionaryDict = {
     "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc, new, an STL container, or a smart pointer.",
+    "itoa"   : "itoa is not a standardized library function.\nConsider using snprintf instead.",
+    "scanf"  : "scanf can be a dangerous function to use.\nIt is more difficult to ensure the receiving buffer won't overflow. Consider using sscanf instead.",
 
     # Windows-specific functions
     "ChangeWindowMessageFilter" : "Using ChangeWindowMessageFilter is not recommended. It is recommended that ChangeWindowMessageFilterEx be used instead.",
