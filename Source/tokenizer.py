@@ -48,9 +48,11 @@ class Tokenizer:
         file.seek(pos, 0)
         return data
 
+    # TODO: This is really crappy sanitizing. We should be able to parse with these present;
+    #       however, this is only necessary if we want to do small static analysis checks in the future.
     def _sanitize_add_token(self, linenum, string):
         santized_string = re.sub("<[^>]*>", "", string)  # Clip off templated arguments if possible.
-        santized_string = re.sub("[()!+-/*#?:><&|;{}]", " ", santized_string)  # Now remove other unnecessary characters
+        santized_string = re.sub("[()!+-/*~^#?:><&|;{}]", " ", santized_string)  # Now remove other unnecessary characters
         split_list = santized_string.split(" ")
         for item in split_list:
             if item:
