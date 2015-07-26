@@ -74,6 +74,7 @@ deprecatedDict = {
 cautionaryDict = {
     "alloca" : "alloca can be a dangerous function to use.\nIf the allocation attempt by alloca causes a stack overflow, then behavior is undefined.\nConsider using malloc, new, an STL container, or a smart pointer.",
     "itoa"   : "itoa is not a standardized library function.\nConsider using snprintf instead.",
+    "rand"   : "Use of rand is not recommended. Consider using the functionality provided in the <random> header instead.",
     "scanf"  : "scanf can be a dangerous function to use.\nIt is more difficult to ensure the receiving buffer won't overflow. Consider using sscanf instead.",
 
     # Windows-specific functions
