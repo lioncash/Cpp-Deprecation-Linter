@@ -56,8 +56,8 @@ deprecatedDict = {
     "mem_fun1_t"                 : "mem_fun1_t is deprecated as of C++11.",
     "mktemp"                     : "mktemp is a POSIX legacy function. Consider using mkstemp instead, or investigate a cross platform solution.",
     "ostrstream"                 : "ostrstream is deprecated as of C++11. Consider using std::ostringstream instead.",
-    "pointer_to_binary_function" : "pointer_to_binary_function is deprecated as of C++11.",
-    "pointer_to_unary_function"  : "pointer_to_unary_function is deprecated as of C++11.",
+    "pointer_to_binary_function" : "pointer_to_binary_function is deprecated as of C++11. Consider using std::bind or std::function instead.",
+    "pointer_to_unary_function"  : "pointer_to_unary_function is deprecated as of C++11. Consider using std::bind or std::function instead.",
     "ptr_fun"                    : "ptr_fun is deprecated as of C++11. Consider using std::function or std::ref instead.",
     "random_shuffle"             : "random_shuffle is deprecated as of C++14. Consider using std::shuffle instead.",
     "set_unexpected"             : "set_unexpected is deprecated as of C++11. Consider using noexcept instead.",
@@ -76,6 +76,7 @@ cautionaryDict = {
     "itoa"   : "itoa is not a standardized library function.\nConsider using snprintf instead.",
     "rand"   : "Use of rand is not recommended. Consider using the functionality provided in the <random> header instead.",
     "scanf"  : "scanf can be a dangerous function to use.\nIt is more difficult to ensure the receiving buffer won't overflow. Consider using sscanf instead.",
+    "srand"  : "Use of srand is not recommended. Consider using the functionality provided in the <random> header instead.",
 
     # Windows-specific functions
     "ChangeWindowMessageFilter" : "Using ChangeWindowMessageFilter is not recommended. It is recommended that ChangeWindowMessageFilterEx be used instead.",
