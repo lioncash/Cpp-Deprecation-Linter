@@ -49,7 +49,7 @@ deprecatedDict = {
     "getwd"                      : "getwd is a POSIX legacy function.",
     "istrstream"                 : "istrstream is deprecated as of C++11. Consider using std::istringstream instead.",
     "mem_fun"                    : "mem_fun is deprecated as of C++11. Consider using std::mem_fn instead.",
-    "mem_fun_ref"                : "mem_fun_ref is deprecated as of C++11. Consider std::function instead.",
+    "mem_fun_ref"                : "mem_fun_ref is deprecated as of C++11. Consider std::mem_fn instead.",
     "mem_fun_ref_t"              : "mem_fun_ref_t is deprecated as of C++11.",
     "mem_fun1_ref_t"             : "mem_fun1_ref_t is deprecated as of C++11.",
     "mem_fun_t"                  : "mem_fun_t is deprecated as of C++11.",
