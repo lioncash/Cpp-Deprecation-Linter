@@ -2,7 +2,6 @@
 # TODO: Skip tokenizing string occurrences. These are not necessary.
 
 import re
-from exceptions import ParseException
 
 
 class Token:
