@@ -16,7 +16,6 @@
 #
 # For anyone actually experienced in Python, I'm so sorry.
 
-import os
 import sys
 
 from pathutils import *
