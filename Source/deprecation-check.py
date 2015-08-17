@@ -37,6 +37,7 @@ deprecatedDict = {
     "const_mem_fun1_t"           : "const_mem_fun1_t is deprecated as of C++11.",
     "const_mem_fun_ref_t"        : "const_mem_fun_ref_t is deprecated as of C++11.",
     "const_mem_fun1_ref_t"       : "const_mem_fun1_ref_t is deprecated as of C++11.",
+    "cuserid"                    : "cuserid is a POSIX legacy function and is removed as of POSIX.1-2001. Consider replacing it with getpwuid(geteuid()).",
     "ecvt"                       : "ecvt is a POSIX legacy function. Consider using std::to_string or snprintf instead.",
     "fcvt"                       : "fcvt is a POSIX legacy function. Consider using std::to_string or snprintf instead.",
     "ftime"                      : "ftime is a POSIX legacy function. Consider using functions provided by the chrono header in C++11 instead.",
