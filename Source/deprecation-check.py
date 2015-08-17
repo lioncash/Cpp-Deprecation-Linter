@@ -45,7 +45,7 @@ deprecatedDict = {
     "gethostbyname"              : "gethostbyname is deprecated in favor of getnameinfo. Consider using it instead.",
     "get_unexpected"             : "get_unexpected is deprecated as of C++11. Consider using noexcept instead.",
     "gets"                       : "gets is removed in the C11 and C++11 standards.",
-    "getwd"                      : "getwd is a POSIX legacy function.",
+    "getwd"                      : "getwd is a POSIX legacy function. Consider using getcwd instead.",
     "inet_addr"                  : "inet_addr is a POSIX legacy function. Consider using getnameinfo or getaddrinfo instead.",
     "inet_aton"                  : "inet_aton is a POSIX legacy function. Consider using getnameinfo or getaddrinfo instead.",
     "inet_lnaof"                 : "inet_lnaof is a POSIX legacy function. Consider using getnameinfo or getaddrinfo instead.",
