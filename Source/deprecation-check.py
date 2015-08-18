@@ -119,7 +119,7 @@ def display_usage():
     print("Flags:")
     print("\t-r - Recursively search any given directories.")
 
-
+# TODO: Let the user specify the extensions to search by.
 def main():
     filelist = []
     recursive_search = False
@@ -131,7 +131,7 @@ def main():
             if arg == "-r":
                 recursive_search = True
             elif os.path.isdir(arg):
-                filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".h"), recursive_search))
+                filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp"), recursive_search))
             elif os.path.isfile(arg):
                 filelist.append(arg)
             else:
