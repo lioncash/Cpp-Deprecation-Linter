@@ -117,17 +117,17 @@ def tokenize_file(filepath):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r", action="store_true", help="recursive file search")
-    parser.add_argument("-f", nargs="*", help="directories or files to check separated by spaces.")
+    parser.add_argument("-r", "--recursive", action="store_true", help="recursive file search")
+    parser.add_argument("-i", "--inputs", nargs="*", help="directories or files to check separated by spaces.")
 
     args = parser.parse_args()
 
     # TODO: Let the user specify the extensions to search by.
     extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp")
     filelist = []
-    for file in args.f:
+    for file in args.inputs:
         if os.path.isdir(file):
-            filelist.extend(get_files_from_dir(file, extensions, args.r))
+            filelist.extend(get_files_from_dir(file, extensions, args.recursive))
         elif os.path.isfile(file):
             filelist.append(file)
 
