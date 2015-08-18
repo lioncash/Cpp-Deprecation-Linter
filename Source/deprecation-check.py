@@ -16,6 +16,7 @@
 #
 # For anyone actually experienced in Python, I'm so sorry.
 
+import argparse
 import sys
 
 from pathutils import *
@@ -114,34 +115,24 @@ def tokenize_file(filepath):
             print("%s: line %d - %s" % (filepath, token.linenumber, cautionaryDict[token.string]))
 
 
-def display_usage():
-    print("Usage: deprecation-check.py <flags> [Files and directories to scan separated by spaces]\n")
-    print("Flags:")
-    print("\t-r - Recursively search any given directories.")
-
-
 def main():
-    filelist = []
-    recursive_search = False
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", action="store_true", help="recursive file search")
+    parser.add_argument("-f", nargs="*", help="directories or files to check separated by spaces.")
 
-    if len(sys.argv) == 1:
-        display_usage()
-    else:
-        # TODO: Let the user specify the extensions to search by.
-        extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp")
-        for arg in sys.argv[1:]:
-            if arg == "-r":
-                recursive_search = True
-            elif os.path.isdir(arg):
-                filelist.extend(get_files_from_dir(arg, extensions, recursive_search))
-            elif os.path.isfile(arg):
-                filelist.append(arg)
-            else:
-                print("Invalid argument specified: %s" % arg)
-                display_usage()
-                return
-        for file in filelist:
-            tokenize_file(file)
+    args = parser.parse_args()
+
+    # TODO: Let the user specify the extensions to search by.
+    extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp")
+    filelist = []
+    for file in args.f:
+        if os.path.isdir(file):
+            filelist.extend(get_files_from_dir(file, extensions, args.r))
+        elif os.path.isfile(file):
+            filelist.append(file)
+
+    for file in filelist:
+        tokenize_file(file)
 
 
 if __name__ == "__main__":
