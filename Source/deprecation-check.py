@@ -127,11 +127,12 @@ def main():
     if len(sys.argv) == 1:
         display_usage()
     else:
+        extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp")
         for arg in sys.argv[1:]:
             if arg == "-r":
                 recursive_search = True
             elif os.path.isdir(arg):
-                filelist.extend(get_files_from_dir(arg, (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp"), recursive_search))
+                filelist.extend(get_files_from_dir(arg, extensions, recursive_search))
             elif os.path.isfile(arg):
                 filelist.append(arg)
             else:
