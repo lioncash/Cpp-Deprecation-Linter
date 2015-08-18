@@ -119,7 +119,7 @@ def display_usage():
     print("Flags:")
     print("\t-r - Recursively search any given directories.")
 
-# TODO: Let the user specify the extensions to search by.
+
 def main():
     filelist = []
     recursive_search = False
@@ -127,6 +127,7 @@ def main():
     if len(sys.argv) == 1:
         display_usage()
     else:
+        # TODO: Let the user specify the extensions to search by.
         extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".tpp")
         for arg in sys.argv[1:]:
             if arg == "-r":
@@ -143,6 +144,5 @@ def main():
             tokenize_file(file)
 
 
-# TODO/NOTE/Whatever: Is there a better way than doing this that doesn't require external libs?
 if __name__ == "__main__":
     main()
